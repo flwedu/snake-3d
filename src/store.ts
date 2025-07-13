@@ -72,7 +72,7 @@ export const useSnakeStore = create<SnakeState>((set, get) => ({
 		const { snake, direction, gridSize, food, gameOver } = get();
 		if (gameOver) return;
 		const nextHead = getNextHead(snake[0], direction);
-		// Colisão com borda
+		// Colisão com borda (paredes)
 		if (
 			nextHead.x < 0 ||
 			nextHead.x >= gridSize ||

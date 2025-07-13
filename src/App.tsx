@@ -4,6 +4,7 @@ import { Food } from "./components/Food";
 import { GameOver } from "./components/GameOver";
 import { Grid } from "./components/Grid";
 import { Snake } from "./components/Snake";
+import { Walls } from "./components/Walls";
 import { useControllerAndMovement } from "./hooks/useControllerAndMovement";
 import { useSnakeStore } from "./store";
 import { useRef } from "react";
@@ -52,6 +53,7 @@ function App() {
 					<ambientLight intensity={0.5} />
 					<pointLight position={[10, 10, 20]} />
 					<Grid />
+					<Walls />
 					<Snake />
 					<Food />
 				</Canvas>
