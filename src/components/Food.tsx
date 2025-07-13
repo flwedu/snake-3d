@@ -50,18 +50,27 @@ export function Food() {
 	useFrame((state, delta) => {
 		if (meshRef.current) {
 			meshRef.current.rotation.y += delta * 2; // Rotação de 2 radianos por segundo
+			// Animação de pulso
+			const t = state.clock.getElapsedTime();
+			const scale = 1 + 0.15 * Math.sin(t * 3);
+			meshRef.current.scale.set(scale, scale, scale);
 		}
 	});
 
 	return (
-		<mesh ref={meshRef} position={[x + 0.5, y + 0.5, 0.5]}>
+		<mesh
+			ref={meshRef}
+			position={[x + 0.5, y + 0.5, 0.5]}
+			castShadow
+			receiveShadow
+		>
 			<sphereGeometry args={[0.5, 32, 32]} />
 			<meshStandardMaterial
 				map={texture}
-				roughness={0.3}
-				metalness={0.1}
+				roughness={0.15}
+				metalness={0.3}
 				emissive={new Color("#ff4757")}
-				emissiveIntensity={0.2}
+				emissiveIntensity={0.5}
 			/>
 		</mesh>
 	);

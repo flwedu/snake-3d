@@ -47,6 +47,7 @@ function App() {
 				id="canvas-container"
 			>
 				<Canvas
+					shadows
 					camera={{
 						fov: 50,
 						near: 0.1,
@@ -54,8 +55,16 @@ function App() {
 					}}
 				>
 					<CameraController gridSize={gridSize} />
-					<ambientLight intensity={0.5} />
-					<pointLight position={[10, 10, 20]} />
+					<ambientLight intensity={0.4} />
+					<directionalLight
+						castShadow
+						position={[10, 20, 20]}
+						intensity={1.2}
+						shadow-mapSize-width={1024}
+						shadow-mapSize-height={1024}
+						shadow-bias={-0.0005}
+					/>
+					<pointLight position={[10, 10, 20]} intensity={0.3} />
 					<Grid />
 					<Walls />
 					<Snake />

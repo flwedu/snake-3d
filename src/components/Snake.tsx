@@ -1,9 +1,47 @@
-import { useMemo } from "react";
+import { useFrame } from "@react-three/fiber";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { CanvasTexture, Color } from "three";
 import { useSnakeStore } from "../store";
 
 export function Snake() {
 	const snake = useSnakeStore((s) => s.snake);
+	const gameOver = useSnakeStore((s) => s.gameOver);
+	const prevSnakeLength = useRef(snake.length);
+	const [growAnim, setGrowAnim] = useState(false);
+	const [blink, setBlink] = useState(false);
+	const [_, setBlinkTime] = useState(0);
+	const headRef = useRef<any>(null);
+
+	// Detecta crescimento
+	useEffect(() => {
+		if (snake.length > prevSnakeLength.current) {
+			setGrowAnim(true);
+			setTimeout(() => setGrowAnim(false), 250); // Duração da animação
+		}
+		prevSnakeLength.current = snake.length;
+	}, [snake.length]);
+
+	// Efeito de piscar ao morrer
+	useEffect(() => {
+		if (gameOver) {
+			setBlinkTime(0);
+			setBlink(false);
+		}
+	}, [gameOver]);
+
+	useFrame((_, delta) => {
+		if (gameOver) {
+			setBlinkTime((t) => {
+				const next = t + delta;
+				if (next < 1.5) {
+					setBlink(Math.floor(next * 8) % 2 === 0);
+				} else {
+					setBlink(false);
+				}
+				return next;
+			});
+		}
+	});
 
 	// Criar textura procedural para a cobra
 	const snakeTexture = useMemo(() => {
@@ -114,9 +152,27 @@ export function Snake() {
 			{snake.map(({ x, y }, index) => {
 				const isHead = index === 0;
 				const texture = isHead ? headTexture : snakeTexture;
+				const ref = isHead ? headRef : undefined;
+
+				// Animação de crescimento na cabeça
+				let scale = 1;
+				if (isHead && growAnim) {
+					scale = 1.4;
+				}
+
+				// Efeito de piscar
+				const visible = !gameOver || blink;
 
 				return (
-					<mesh key={`${x},${y}`} position={[x + 0.5, y + 0.5, 0.5]}>
+					<mesh
+						key={`${x},${y}`}
+						position={[x + 0.5, y + 0.5, 0.5]}
+						castShadow
+						receiveShadow
+						ref={ref}
+						scale={isHead ? [scale, scale, scale] : [1, 1, 1]}
+						visible={visible}
+					>
 						<boxGeometry args={[1, 1, 1]} />
 						<meshStandardMaterial
 							map={texture}

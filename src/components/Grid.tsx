@@ -41,5 +41,5 @@ export function Grid() {
 		);
 	}
 
-	return <group>{lines}</group>;
+	return <group receiveShadow>{lines}</group>;
 }
