@@ -1,11 +1,21 @@
 import { useEffect } from "react";
 import { type SnakeState, useSnakeStore } from "../store";
 
-const directionMap: Record<KeyboardEvent["key"], SnakeState["direction"]> = {
+const directionMapKey: Record<string, SnakeState["direction"]> = {
 	ArrowUp: "up",
 	ArrowDown: "down",
 	ArrowLeft: "left",
 	ArrowRight: "right",
+	w: "up",
+	s: "down",
+	a: "left",
+	d: "right",
+	W: "up",
+	S: "down",
+	A: "left",
+	D: "right",
+};
+const directionMapCode: Record<string, SnakeState["direction"]> = {
 	KeyW: "up",
 	KeyS: "down",
 	KeyA: "left",
@@ -18,7 +28,7 @@ const directionMap: Record<KeyboardEvent["key"], SnakeState["direction"]> = {
  * @returns Direção correspondente ao evento, ou null se não houver correspondência
  */
 export function getDirection(e: KeyboardEvent) {
-	return directionMap[e.key] ?? null;
+	return directionMapKey[e.key] ?? directionMapCode[e.code] ?? null;
 }
 
 /**
@@ -28,16 +38,23 @@ export function getDirection(e: KeyboardEvent) {
 export function useControllerAndMovement(gameOver: boolean) {
 	const setDirection = useSnakeStore((s) => s.setDirection);
 	const moveSnake = useSnakeStore((s) => s.moveSnake);
+	const restart = useSnakeStore((s) => s.restart);
 
 	// Controles de teclado
 	useEffect(() => {
 		function handleKey(e: KeyboardEvent) {
 			const direction = getDirection(e);
-			if (direction) setDirection(direction as SnakeState["direction"]);
+			if ((e.key === "Enter" || e.key === " ") && gameOver) {
+				restart();
+			}
+			if (direction) {
+				e.preventDefault();
+				setDirection(direction as SnakeState["direction"]);
+			}
 		}
-		window.addEventListener("keydown", handleKey);
+		window.addEventListener("keydown", handleKey, { passive: false });
 		return () => window.removeEventListener("keydown", handleKey);
-	}, [setDirection]);
+	}, [setDirection, gameOver, restart]);
 
 	// Movimento automático
 	useEffect(() => {

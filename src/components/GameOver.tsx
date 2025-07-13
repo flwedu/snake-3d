@@ -63,7 +63,7 @@ export function GameOver() {
 						boxShadow: "0 2px 8px #0006",
 					}}
 				>
-					Reiniciar
+					Reiniciar (Enter / Space)
 				</button>
 			</div>
 		</div>
