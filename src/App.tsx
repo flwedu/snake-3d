@@ -1,4 +1,5 @@
 import "./App.css";
+import { Canvas } from "@react-three/fiber";
 import { Food } from "./components/Food";
 import { Grid } from "./components/Grid";
 import { Snake } from "./components/Snake";
@@ -21,9 +22,15 @@ function App() {
 			<div>
 				<strong>Food:</strong> {JSON.stringify(food)}
 			</div>
-			<Grid />
-			<Snake />
-			<Food />
+			<div style={{ width: "600px", height: "600px", margin: "0 auto" }}>
+				<Canvas camera={{ position: [0, 20, 20], fov: 50 }}>
+					<ambientLight intensity={0.5} />
+					<pointLight position={[10, 20, 10]} />
+					<Grid />
+					<Snake />
+					<Food />
+				</Canvas>
+			</div>
 		</>
 	);
 }
