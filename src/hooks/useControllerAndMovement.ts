@@ -9,8 +9,9 @@ export function getDirection(e: KeyboardEvent) {
 	return null;
 }
 
-export function useController() {
+export function useControllerAndMovement(gameOver: boolean) {
 	const setDirection = useSnakeStore((s) => s.setDirection);
+	const moveSnake = useSnakeStore((s) => s.moveSnake);
 
 	// Controles de teclado
 	useEffect(() => {
@@ -21,4 +22,13 @@ export function useController() {
 		window.addEventListener("keydown", handleKey);
 		return () => window.removeEventListener("keydown", handleKey);
 	}, [setDirection]);
+
+		// Movimento automático
+		useEffect(() => {
+			if (gameOver) return;
+			const interval = setInterval(() => {
+				moveSnake();
+			}, 200);
+			return () => clearInterval(interval);
+		}, [moveSnake, gameOver]);
 }
