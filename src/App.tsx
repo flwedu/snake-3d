@@ -1,5 +1,7 @@
 import { Canvas } from "@react-three/fiber";
 import "./App.css";
+import { useFrame, useThree } from "@react-three/fiber";
+import { useRef } from "react";
 import { Food } from "./components/Food";
 import { GameOver } from "./components/GameOver";
 import { Grid } from "./components/Grid";
@@ -7,8 +9,6 @@ import { Snake } from "./components/Snake";
 import { Walls } from "./components/Walls";
 import { useControllerAndMovement } from "./hooks/useControllerAndMovement";
 import { useSnakeStore } from "./store";
-import { useRef } from "react";
-import { useFrame, useThree } from "@react-three/fiber";
 
 function CameraController({ gridSize }: { gridSize: number }) {
 	const { camera } = useThree();
@@ -27,18 +27,22 @@ function CameraController({ gridSize }: { gridSize: number }) {
 function App() {
 	const gridSize = useSnakeStore((s) => s.gridSize);
 	const gameOver = useSnakeStore((s) => s.gameOver);
+	const score = useSnakeStore((s) => s.score);
 
 	useControllerAndMovement(gameOver);
 
 	return (
 		<>
 			<h1>Snake 3D</h1>
-			{gameOver && <GameOver />}
+			<p style={{ fontSize: 20, fontWeight: "bold", margin: 8 }}>
+				Pontuação: {score}
+			</p>
 			<div
 				style={{
 					width: 600,
 					height: 600,
 					margin: "0 auto",
+					position: "relative",
 				}}
 				id="canvas-container"
 			>
@@ -57,6 +61,7 @@ function App() {
 					<Snake />
 					<Food />
 				</Canvas>
+				{gameOver && <GameOver />}
 			</div>
 		</>
 	);

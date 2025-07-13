@@ -11,13 +11,17 @@ export interface SnakeState {
 	direction: "up" | "down" | "left" | "right";
 	food: Position;
 	gameOver: boolean;
+	score: number; // Novo estado de pontuação
 	setDirection: (dir: SnakeState["direction"]) => void;
 	moveSnake: () => void;
 	placeFood: () => void;
 	restart: () => void;
 }
 
-function getNextHead({ x, y }: Position, dir: SnakeState["direction"]): Position {
+function getNextHead(
+	{ x, y }: Position,
+	dir: SnakeState["direction"],
+): Position {
 	switch (dir) {
 		case "up":
 			return { x, y: y + 1 };
@@ -55,6 +59,7 @@ export const useSnakeStore = create<SnakeState>((set, get) => ({
 	direction: "right",
 	food: { x: 10, y: 10 },
 	gameOver: false,
+	score: 0, // Inicializa pontuação
 	setDirection: (dir) => {
 		// Impede reversão direta
 		const { direction } = get();
@@ -69,7 +74,7 @@ export const useSnakeStore = create<SnakeState>((set, get) => ({
 		set({ direction: dir });
 	},
 	moveSnake: () => {
-		const { snake, direction, gridSize, food, gameOver } = get();
+		const { snake, direction, gridSize, food, gameOver, score } = get();
 		if (gameOver) return;
 		const nextHead = getNextHead(snake[0], direction);
 		// Colisão com borda (paredes)
@@ -89,14 +94,16 @@ export const useSnakeStore = create<SnakeState>((set, get) => ({
 		}
 		let newSnake: Position[];
 		let newFood = food;
+		let newScore = score;
 		// Comer comida
 		if (positionsEqual(nextHead, food)) {
 			newSnake = [nextHead, ...snake];
 			newFood = randomFood(gridSize, newSnake);
+			newScore = score + 1; // Incrementa pontuação
 		} else {
 			newSnake = [nextHead, ...snake.slice(0, -1)];
 		}
-		set({ snake: newSnake, food: newFood });
+		set({ snake: newSnake, food: newFood, score: newScore });
 	},
 	placeFood: () => {
 		const { gridSize, snake } = get();
@@ -112,6 +119,7 @@ export const useSnakeStore = create<SnakeState>((set, get) => ({
 			direction: "right",
 			food: { x: 10, y: 10 },
 			gameOver: false,
+			score: 0, // Reinicia pontuação
 		});
 	},
 }));
