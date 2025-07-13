@@ -1,69 +1,52 @@
-# React + TypeScript + Vite
+# Snake 3D
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Um jogo Snake 3D feito com React, Vite e react-three-fiber.
 
-Currently, two official plugins are available:
+## Demonstração
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Jogue em 3D, controle a cobra com as setas do teclado, tente bater seu recorde e aproveite os efeitos visuais!
 
-## Expanding the ESLint configuration
+## Tecnologias Utilizadas
+- [React](https://react.dev/)
+- [Vite](https://vitejs.dev/)
+- [@react-three/fiber](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction)
+- [Three.js](https://threejs.org/)
+- [Zustand](https://zustand-demo.pmnd.rs/) para gerenciamento de estado
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Instalação e Execução
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+1. Instale as dependências:
+   ```sh
+   pnpm install
+   # ou
+   npm install
+   ```
+2. Rode o projeto em modo desenvolvimento:
+   ```sh
+   pnpm dev
+   # ou
+   npm run dev
+   ```
+3. Acesse [http://localhost:5173](http://localhost:5173) no navegador.
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+## Como Jogar
+- Use as **setas do teclado** para controlar a direção da cobra.
+- Coma a comida para crescer e ganhar pontos.
+- O jogo termina ao colidir com as paredes ou com o próprio corpo.
+- Clique em **Reiniciar** para jogar novamente após o game over.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Efeitos Visuais
+- Comida com animação de pulso e brilho
+- Sombras suaves e iluminação aprimorada
+- Efeito de crescimento ao comer
+- Cobra pisca ao morrer
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Personalização
+- Para alterar o tamanho do grid, edite o valor de `gridSize` em `src/store.ts`.
+- Os efeitos visuais podem ser ajustados em `src/components/Food.tsx` e `src/components/Snake.tsx`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Créditos
+Desenvolvido por [@flwed](https://github.com/flwed).
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
+Sinta-se à vontade para contribuir, sugerir melhorias ou usar este projeto como base para outros jogos 3D!
