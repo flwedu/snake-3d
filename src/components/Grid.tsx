@@ -13,7 +13,7 @@ export function Grid() {
 					<primitive
 						object={
 							new THREE.BufferAttribute(
-								new Float32Array([0, 0, i, gridSize, 0, i]),
+								new Float32Array([0, i, 0, gridSize, i, 0]),
 								3,
 							)
 						}
@@ -29,7 +29,7 @@ export function Grid() {
 					<primitive
 						object={
 							new THREE.BufferAttribute(
-								new Float32Array([i, 0, 0, i, 0, gridSize]),
+								new Float32Array([i, 0, 0, i, gridSize, 0]),
 								3,
 							)
 						}

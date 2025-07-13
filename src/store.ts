@@ -1,8 +1,11 @@
 import { create } from "zustand";
 
-export type Position = [number, number];
+export type Position = {
+	x: number;
+	y: number;
+};
 
-interface SnakeState {
+export interface SnakeState {
 	gridSize: number;
 	snake: Position[];
 	direction: "up" | "down" | "left" | "right";
@@ -14,30 +17,30 @@ interface SnakeState {
 	restart: () => void;
 }
 
-function getNextHead([x, z]: Position, dir: SnakeState["direction"]): Position {
+function getNextHead({ x, y }: Position, dir: SnakeState["direction"]): Position {
 	switch (dir) {
 		case "up":
-			return [x, z - 1];
+			return { x, y: y + 1 };
 		case "down":
-			return [x, z + 1];
+			return { x, y: y - 1 };
 		case "left":
-			return [x - 1, z];
+			return { x: x - 1, y };
 		case "right":
-			return [x + 1, z];
+			return { x: x + 1, y };
 	}
 }
 
 function positionsEqual(a: Position, b: Position) {
-	return a[0] === b[0] && a[1] === b[1];
+	return a.x === b.x && a.y === b.y;
 }
 
 function randomFood(gridSize: number, snake: Position[]): Position {
 	let pos: Position;
 	do {
-		pos = [
-			Math.floor(Math.random() * gridSize),
-			Math.floor(Math.random() * gridSize),
-		];
+		pos = {
+			x: Math.floor(Math.random() * gridSize),
+			y: Math.floor(Math.random() * gridSize),
+		};
 	} while (snake.some((s) => positionsEqual(s, pos)));
 	return pos;
 }
@@ -45,12 +48,12 @@ function randomFood(gridSize: number, snake: Position[]): Position {
 export const useSnakeStore = create<SnakeState>((set, get) => ({
 	gridSize: 15,
 	snake: [
-		[7, 7],
-		[7, 6],
-		[7, 5],
+		{ x: 7, y: 7 },
+		{ x: 7, y: 6 },
+		{ x: 7, y: 5 },
 	],
 	direction: "right",
-	food: [10, 10],
+	food: { x: 10, y: 10 },
 	gameOver: false,
 	setDirection: (dir) => {
 		// Impede reversão direta
@@ -71,10 +74,10 @@ export const useSnakeStore = create<SnakeState>((set, get) => ({
 		const nextHead = getNextHead(snake[0], direction);
 		// Colisão com borda
 		if (
-			nextHead[0] < 0 ||
-			nextHead[0] >= gridSize ||
-			nextHead[1] < 0 ||
-			nextHead[1] >= gridSize
+			nextHead.x < 0 ||
+			nextHead.x >= gridSize ||
+			nextHead.y < 0 ||
+			nextHead.y >= gridSize
 		) {
 			set({ gameOver: true });
 			return;
@@ -102,12 +105,12 @@ export const useSnakeStore = create<SnakeState>((set, get) => ({
 	restart: () => {
 		set({
 			snake: [
-				[7, 7],
-				[7, 6],
-				[7, 5],
+				{ x: 7, y: 7 },
+				{ x: 7, y: 6 },
+				{ x: 7, y: 5 },
 			],
 			direction: "right",
-			food: [10, 10],
+			food: { x: 10, y: 10 },
 			gameOver: false,
 		});
 	},

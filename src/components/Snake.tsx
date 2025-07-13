@@ -5,8 +5,8 @@ export function Snake() {
 
 	return (
 		<group>
-			{snake.map(([x, z]) => (
-				<mesh key={`${x},${z}`} position={[x, 0.5, z]}>
+			{snake.map(({ x, y }) => (
+				<mesh key={`${x},${y}`} position={[x + 0.5, y + 0.5, 0.5]}>
 					<boxGeometry args={[1, 1, 1]} />
 					<meshStandardMaterial color="#1abc9c" />
 				</mesh>
