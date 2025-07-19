@@ -5,17 +5,30 @@ export type Position = {
 	y: number;
 };
 
+export type Difficulty = "easy" | "medium" | "hard";
+
+// Velocidades base para cada nível de dificuldade (em ms)
+export const DIFFICULTY_SPEEDS: Record<Difficulty, number> = {
+	easy: 300,    // Mais lento
+	medium: 200,  // Velocidade padrão
+	hard: 100,    // Mais rápido
+};
+
 export interface SnakeState {
 	gridSize: number;
 	snake: Position[];
 	direction: "up" | "down" | "left" | "right";
 	food: Position;
 	gameOver: boolean;
-	score: number; // Novo estado de pontuação
+	score: number;
+	difficulty: Difficulty;
+	currentSpeed: number; // Velocidade atual (pode mudar com a pontuação)
 	setDirection: (dir: SnakeState["direction"]) => void;
 	moveSnake: () => void;
 	placeFood: () => void;
 	restart: () => void;
+	setDifficulty: (difficulty: Difficulty) => void;
+	calculateSpeed: () => number; // Calcula a velocidade com base na dificuldade e pontuação
 }
 
 function getNextHead(
@@ -59,7 +72,9 @@ export const useSnakeStore = create<SnakeState>((set, get) => ({
 	direction: "right",
 	food: { x: 10, y: 10 },
 	gameOver: false,
-	score: 0, // Inicializa pontuação
+	score: 0,
+	difficulty: "medium", // Dificuldade padrão
+	currentSpeed: DIFFICULTY_SPEEDS.medium, // Velocidade inicial baseada na dificuldade padrão
 	setDirection: (dir) => {
 		// Impede reversão direta
 		const { direction } = get();
@@ -95,21 +110,50 @@ export const useSnakeStore = create<SnakeState>((set, get) => ({
 		let newSnake: Position[];
 		let newFood = food;
 		let newScore = score;
+		let scoreChanged = false;
+
 		// Comer comida
 		if (positionsEqual(nextHead, food)) {
 			newSnake = [nextHead, ...snake];
 			newFood = randomFood(gridSize, newSnake);
 			newScore = score + 1; // Incrementa pontuação
+			scoreChanged = true;
 		} else {
 			newSnake = [nextHead, ...snake.slice(0, -1)];
 		}
+
 		set({ snake: newSnake, food: newFood, score: newScore });
+
+		// Se a pontuação mudou, recalcula a velocidade
+		if (scoreChanged) {
+			const newSpeed = get().calculateSpeed();
+			set({ currentSpeed: newSpeed });
+		}
 	},
 	placeFood: () => {
 		const { gridSize, snake } = get();
 		set({ food: randomFood(gridSize, snake) });
 	},
+	setDifficulty: (difficulty) => {
+		const baseSpeed = DIFFICULTY_SPEEDS[difficulty];
+		set({
+			difficulty,
+			currentSpeed: baseSpeed
+		});
+	},
+
+	calculateSpeed: () => {
+		const { difficulty, score } = get();
+		const baseSpeed = DIFFICULTY_SPEEDS[difficulty];
+
+		// Aumenta a velocidade (diminui o intervalo) conforme a pontuação aumenta
+		// A cada 5 pontos, aumenta a velocidade em 5%
+		const speedMultiplier = Math.max(0.5, 1 - (Math.floor(score / 5) * 0.05));
+		return Math.round(baseSpeed * speedMultiplier);
+	},
+
 	restart: () => {
+		const { difficulty } = get();
 		set({
 			snake: [
 				{ x: 7, y: 7 },
@@ -119,7 +163,8 @@ export const useSnakeStore = create<SnakeState>((set, get) => ({
 			direction: "right",
 			food: { x: 10, y: 10 },
 			gameOver: false,
-			score: 0, // Reinicia pontuação
+			score: 0,
+			currentSpeed: DIFFICULTY_SPEEDS[difficulty] // Mantém a dificuldade atual, mas reinicia a velocidade
 		});
 	},
 }));

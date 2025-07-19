@@ -56,12 +56,17 @@ export function useControllerAndMovement(gameOver: boolean) {
 		return () => window.removeEventListener("keydown", handleKey);
 	}, [setDirection, gameOver, restart]);
 
-	// Movimento automático
+	// Movimento automático com velocidade dinâmica
 	useEffect(() => {
 		if (gameOver) return;
+
+		// Obtém a velocidade atual do store
+		const currentSpeed = useSnakeStore.getState().currentSpeed;
+
 		const interval = setInterval(() => {
 			moveSnake();
-		}, 200);
+		}, currentSpeed);
+
 		return () => clearInterval(interval);
-	}, [moveSnake, gameOver]);
+	}, [moveSnake, gameOver, useSnakeStore]);
 }
