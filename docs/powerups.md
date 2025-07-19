@@ -80,7 +80,7 @@ O jogo Snake 3D agora inclui um sistema de power-ups que adiciona elementos estr
 
 ## Configurações
 
-As configurações dos power-ups podem ser ajustadas no arquivo `src/store.ts`:
+As configurações dos power-ups podem ser ajustadas no arquivo `src/constants.ts`:
 
 ```typescript
 export const POWERUP_CONFIG = {

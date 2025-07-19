@@ -1,6 +1,7 @@
 import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import { CanvasTexture, Color, type Mesh } from "three";
+import { VISUAL_CONFIG } from "../constants";
 import { useSnakeStore } from "../store";
 
 export function Food() {
@@ -12,37 +13,13 @@ export function Food() {
 	const foodConfig = useMemo(() => {
 		switch (type) {
 			case "golden":
-				return {
-					color: "#ffd700",
-					emissive: "#ffed4e",
-					scale: 1.2,
-					rotationSpeed: 3,
-					pulseSpeed: 4,
-				};
+				return VISUAL_CONFIG.food.golden;
 			case "speed":
-				return {
-					color: "#00ff00",
-					emissive: "#4eff4e",
-					scale: 1.1,
-					rotationSpeed: 4,
-					pulseSpeed: 5,
-				};
+				return VISUAL_CONFIG.food.speed;
 			case "invincible":
-				return {
-					color: "#ff00ff",
-					emissive: "#ff4eff",
-					scale: 1.1,
-					rotationSpeed: 5,
-					pulseSpeed: 6,
-				};
+				return VISUAL_CONFIG.food.invincible;
 			default: // normal
-				return {
-					color: "#ff6b6b",
-					emissive: "#ff4757",
-					scale: 1.0,
-					rotationSpeed: 2,
-					pulseSpeed: 3,
-				};
+				return VISUAL_CONFIG.food.normal;
 		}
 	}, [type]);
 

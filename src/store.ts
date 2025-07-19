@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { DIFFICULTY_SPEEDS, POWERUP_CONFIG, GAME_CONFIG } from "./constants";
 
 export type Position = {
 	x: number;
@@ -28,33 +29,6 @@ export interface ActiveEffects {
 		expiresAt: number;
 	};
 }
-
-// Velocidades base para cada nível de dificuldade (em ms)
-export const DIFFICULTY_SPEEDS: Record<Difficulty, number> = {
-	easy: 300,    // Mais lento
-	medium: 200,  // Velocidade padrão
-	hard: 100,    // Mais rápido
-};
-
-// Configurações dos power-ups
-export const POWERUP_CONFIG = {
-	golden: {
-		points: 3, // Pontos extras
-		spawnChance: 0.1, // 10% de chance
-		duration: null, // Não expira
-	},
-	speed: {
-		points: 1,
-		spawnChance: 0.08, // 8% de chance
-		duration: 5000, // 5 segundos
-		speedMultiplier: 0.5, // 2x mais rápido
-	},
-	invincible: {
-		points: 1,
-		spawnChance: 0.05, // 5% de chance
-		duration: 3000, // 3 segundos
-	},
-};
 
 export interface SnakeState {
 	gridSize: number;
@@ -134,18 +108,14 @@ function createFoodItem(gridSize: number, snake: Position[]): FoodItem {
 }
 
 export const useSnakeStore = create<SnakeState>((set, get) => ({
-	gridSize: 15,
-	snake: [
-		{ x: 7, y: 7 },
-		{ x: 7, y: 6 },
-		{ x: 7, y: 5 },
-	],
+	gridSize: GAME_CONFIG.gridSize,
+	snake: GAME_CONFIG.initialSnake,
 	direction: "right",
-	food: { position: { x: 10, y: 10 }, type: "normal" },
+	food: { position: GAME_CONFIG.initialFood, type: "normal" },
 	gameOver: false,
 	score: 0,
-	difficulty: "medium", // Dificuldade padrão
-	currentSpeed: DIFFICULTY_SPEEDS.medium, // Velocidade inicial baseada na dificuldade padrão
+	difficulty: GAME_CONFIG.defaultDifficulty,
+	currentSpeed: DIFFICULTY_SPEEDS[GAME_CONFIG.defaultDifficulty],
 	activeEffects: {
 		speedBoost: {
 			active: false,
@@ -316,13 +286,9 @@ export const useSnakeStore = create<SnakeState>((set, get) => ({
 	restart: () => {
 		const { difficulty } = get();
 		set({
-			snake: [
-				{ x: 7, y: 7 },
-				{ x: 7, y: 6 },
-				{ x: 7, y: 5 },
-			],
+			snake: GAME_CONFIG.initialSnake,
 			direction: "right",
-			food: { position: { x: 10, y: 10 }, type: "normal" },
+			food: { position: GAME_CONFIG.initialFood, type: "normal" },
 			gameOver: false,
 			score: 0,
 			currentSpeed: DIFFICULTY_SPEEDS[difficulty], // Mantém a dificuldade atual, mas reinicia a velocidade

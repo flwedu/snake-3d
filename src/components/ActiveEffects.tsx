@@ -1,4 +1,5 @@
 import React from "react";
+import { VISUAL_CONFIG } from "../constants";
 import { useSnakeStore } from "../store";
 
 export function ActiveEffects() {
@@ -21,7 +22,7 @@ export function ActiveEffects() {
 		}}>
 			{activeEffects.speedBoost.active && (
 				<div style={{
-					background: "rgba(0, 255, 0, 0.8)",
+					background: `${VISUAL_CONFIG.food.speed.color}cc`,
 					color: "white",
 					padding: "5px 10px",
 					borderRadius: "5px",
@@ -36,7 +37,7 @@ export function ActiveEffects() {
 			)}
 			{activeEffects.invincible.active && (
 				<div style={{
-					background: "rgba(255, 0, 255, 0.8)",
+					background: `${VISUAL_CONFIG.food.invincible.color}cc`,
 					color: "white",
 					padding: "5px 10px",
 					borderRadius: "5px",

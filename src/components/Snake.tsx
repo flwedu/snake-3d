@@ -1,6 +1,7 @@
 import { useFrame } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { CanvasTexture, Color } from "three";
+import { VISUAL_CONFIG } from "../constants";
 import { useSnakeStore } from "../store";
 
 export function Snake() {
@@ -174,8 +175,12 @@ export function Snake() {
 
 				// Efeito de invencibilidade
 				const isInvincible = activeEffects.invincible.active;
-				const invincibleColor = isInvincible ? new Color("#ff00ff") : (isHead ? new Color("#1abc9c") : new Color("#27ae60"));
-				const invincibleIntensity = isInvincible ? 0.8 : (isHead ? 0.3 : 0.1);
+				const invincibleColor = isInvincible
+					? new Color(VISUAL_CONFIG.snake.invincible.color)
+					: (isHead ? new Color(VISUAL_CONFIG.snake.normal.headColor) : new Color(VISUAL_CONFIG.snake.normal.bodyColor));
+				const invincibleIntensity = isInvincible
+					? VISUAL_CONFIG.snake.invincible.emissive
+					: (isHead ? VISUAL_CONFIG.snake.normal.headEmissive : VISUAL_CONFIG.snake.normal.bodyEmissive);
 
 				return (
 					<mesh

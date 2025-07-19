@@ -1,4 +1,5 @@
 import React from "react";
+import { VISUAL_CONFIG } from "../constants";
 
 export function PowerUpInfo() {
 	return (
@@ -16,13 +17,13 @@ export function PowerUpInfo() {
 		}}>
 			<div style={{ fontWeight: "bold", marginBottom: "5px" }}>Power-ups:</div>
 			<div style={{ display: "flex", alignItems: "center", gap: "5px", marginBottom: "3px" }}>
-				<span style={{ color: "#ffd700" }}>★</span> Dourado: +3 pontos
+				<span style={{ color: VISUAL_CONFIG.food.golden.color }}>★</span> Dourado: +3 pontos
 			</div>
 			<div style={{ display: "flex", alignItems: "center", gap: "5px", marginBottom: "3px" }}>
-				<span style={{ color: "#00ff00" }}>⚡</span> Velocidade: 2x por 5s
+				<span style={{ color: VISUAL_CONFIG.food.speed.color }}>⚡</span> Velocidade: 2x por 5s
 			</div>
 			<div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-				<span style={{ color: "#ff00ff" }}>🛡️</span> Invencível: 3s
+				<span style={{ color: VISUAL_CONFIG.food.invincible.color }}>🛡️</span> Invencível: 3s
 			</div>
 		</div>
 	);
