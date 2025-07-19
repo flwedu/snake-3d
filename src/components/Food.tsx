@@ -34,7 +34,7 @@ export function Food() {
 		const gradient = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
 		gradient.addColorStop(0, foodConfig.color);
 		gradient.addColorStop(0.5, foodConfig.color);
-		gradient.addColorStop(1, new Color(foodConfig.color).multiplyScalar(0.7).getHexString());
+		gradient.addColorStop(1, new Color(foodConfig.color).multiplyScalar(0.7).getStyle());
 
 		ctx.fillStyle = gradient;
 		ctx.fillRect(0, 0, 256, 256);
