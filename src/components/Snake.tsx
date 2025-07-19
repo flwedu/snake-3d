@@ -6,6 +6,7 @@ import { useSnakeStore } from "../store";
 export function Snake() {
 	const snake = useSnakeStore((s) => s.snake);
 	const gameOver = useSnakeStore((s) => s.gameOver);
+	const activeEffects = useSnakeStore((s) => s.activeEffects);
 	const prevSnakeLength = useRef(snake.length);
 	const [growAnim, setGrowAnim] = useState(false);
 	const [blink, setBlink] = useState(false);
@@ -29,7 +30,7 @@ export function Snake() {
 		}
 	}, [gameOver]);
 
-	useFrame((_, delta) => {
+	useFrame((state, delta) => {
 		if (gameOver) {
 			setBlinkTime((t) => {
 				const next = t + delta;
@@ -40,6 +41,14 @@ export function Snake() {
 				}
 				return next;
 			});
+		}
+
+		// Efeito de invencibilidade - rotação e brilho
+		if (activeEffects.invincible.active && headRef.current) {
+			headRef.current.rotation.y += delta * 3;
+			const t = state.clock.getElapsedTime();
+			const pulse = 0.5 + 0.3 * Math.sin(t * 8);
+			headRef.current.material.emissiveIntensity = pulse;
 		}
 	});
 
@@ -163,6 +172,11 @@ export function Snake() {
 				// Efeito de piscar
 				const visible = !gameOver || blink;
 
+				// Efeito de invencibilidade
+				const isInvincible = activeEffects.invincible.active;
+				const invincibleColor = isInvincible ? new Color("#ff00ff") : (isHead ? new Color("#1abc9c") : new Color("#27ae60"));
+				const invincibleIntensity = isInvincible ? 0.8 : (isHead ? 0.3 : 0.1);
+
 				return (
 					<mesh
 						key={`${x},${y}`}
@@ -178,8 +192,8 @@ export function Snake() {
 							map={texture}
 							roughness={0.4}
 							metalness={0.2}
-							emissive={isHead ? new Color("#1abc9c") : new Color("#27ae60")}
-							emissiveIntensity={isHead ? 0.3 : 0.1}
+							emissive={invincibleColor}
+							emissiveIntensity={invincibleIntensity}
 						/>
 					</mesh>
 				);

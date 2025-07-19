@@ -17,9 +17,9 @@
   - [x] Progressão de velocidade conforme a pontuação aumenta
 
 - **Power-ups**
-  - [ ] Comida dourada (pontos extras)
-  - [ ] Comida de velocidade (altera temporariamente a velocidade)
-  - [ ] Comida de invencibilidade (atravessa paredes/corpo temporariamente)
+  - [x] Comida dourada (pontos extras)
+  - [x] Comida de velocidade (altera temporariamente a velocidade)
+  - [x] Comida de invencibilidade (atravessa paredes/corpo temporariamente)
 
 - **Obstáculos**
   - [ ]Barreiras estáticas no grid

@@ -39,6 +39,7 @@ export function useControllerAndMovement(gameOver: boolean) {
 	const setDirection = useSnakeStore((s) => s.setDirection);
 	const moveSnake = useSnakeStore((s) => s.moveSnake);
 	const restart = useSnakeStore((s) => s.restart);
+	const updateEffects = useSnakeStore((s) => s.updateEffects);
 
 	// Controles de teclado
 	useEffect(() => {
@@ -55,6 +56,17 @@ export function useControllerAndMovement(gameOver: boolean) {
 		window.addEventListener("keydown", handleKey, { passive: false });
 		return () => window.removeEventListener("keydown", handleKey);
 	}, [setDirection, gameOver, restart]);
+
+	// Atualização de efeitos temporários
+	useEffect(() => {
+		if (gameOver) return;
+
+		const effectInterval = setInterval(() => {
+			updateEffects();
+		}, 100); // Verifica a cada 100ms
+
+		return () => clearInterval(effectInterval);
+	}, [updateEffects, gameOver]);
 
 	// Movimento automático com velocidade dinâmica
 	useEffect(() => {

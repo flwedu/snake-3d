@@ -5,10 +5,48 @@ import { useSnakeStore } from "../store";
 
 export function Food() {
 	const food = useSnakeStore((s) => s.food);
-	const { x, y } = food;
+	const { position: { x, y }, type } = food;
 	const meshRef = useRef<Mesh>(null);
 
-	// Criar textura procedural
+	// Configurações visuais para cada tipo de comida
+	const foodConfig = useMemo(() => {
+		switch (type) {
+			case "golden":
+				return {
+					color: "#ffd700",
+					emissive: "#ffed4e",
+					scale: 1.2,
+					rotationSpeed: 3,
+					pulseSpeed: 4,
+				};
+			case "speed":
+				return {
+					color: "#00ff00",
+					emissive: "#4eff4e",
+					scale: 1.1,
+					rotationSpeed: 4,
+					pulseSpeed: 5,
+				};
+			case "invincible":
+				return {
+					color: "#ff00ff",
+					emissive: "#ff4eff",
+					scale: 1.1,
+					rotationSpeed: 5,
+					pulseSpeed: 6,
+				};
+			default: // normal
+				return {
+					color: "#ff6b6b",
+					emissive: "#ff4757",
+					scale: 1.0,
+					rotationSpeed: 2,
+					pulseSpeed: 3,
+				};
+		}
+	}, [type]);
+
+	// Criar textura procedural baseada no tipo
 	const texture = useMemo(() => {
 		const canvas = document.createElement("canvas");
 		canvas.width = 256;
@@ -17,9 +55,9 @@ export function Food() {
 
 		// Gradiente base
 		const gradient = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
-		gradient.addColorStop(0, "#ff6b6b");
-		gradient.addColorStop(0.5, "#e74c3c");
-		gradient.addColorStop(1, "#c0392b");
+		gradient.addColorStop(0, foodConfig.color);
+		gradient.addColorStop(0.5, foodConfig.color);
+		gradient.addColorStop(1, new Color(foodConfig.color).multiplyScalar(0.7).getHexString());
 
 		ctx.fillStyle = gradient;
 		ctx.fillRect(0, 0, 256, 256);
@@ -44,15 +82,38 @@ export function Food() {
 		ctx.fillStyle = highlight;
 		ctx.fillRect(0, 0, 256, 256);
 
+		// Adicionar símbolos especiais para power-ups
+		if (type !== "normal") {
+			ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+			ctx.font = "bold 120px Arial";
+			ctx.textAlign = "center";
+			ctx.textBaseline = "middle";
+
+			let symbol = "";
+			switch (type) {
+				case "golden":
+					symbol = "★";
+					break;
+				case "speed":
+					symbol = "⚡";
+					break;
+				case "invincible":
+					symbol = "🛡️";
+					break;
+			}
+
+			ctx.fillText(symbol, 128, 128);
+		}
+
 		return new CanvasTexture(canvas);
-	}, []);
+	}, [type, foodConfig.color]);
 
 	useFrame((state, delta) => {
 		if (meshRef.current) {
-			meshRef.current.rotation.y += delta * 2; // Rotação de 2 radianos por segundo
+			meshRef.current.rotation.y += delta * foodConfig.rotationSpeed;
 			// Animação de pulso
 			const t = state.clock.getElapsedTime();
-			const scale = 1 + 0.15 * Math.sin(t * 3);
+			const scale = foodConfig.scale + 0.15 * Math.sin(t * foodConfig.pulseSpeed);
 			meshRef.current.scale.set(scale, scale, scale);
 		}
 	});
@@ -69,7 +130,7 @@ export function Food() {
 				map={texture}
 				roughness={0.15}
 				metalness={0.3}
-				emissive={new Color("#ff4757")}
+				emissive={new Color(foodConfig.emissive)}
 				emissiveIntensity={0.5}
 			/>
 		</mesh>
