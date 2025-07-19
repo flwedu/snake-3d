@@ -13,69 +13,69 @@
 ### 1. Jogabilidade
 
 - **Níveis de Dificuldade**
-	- [x] Velocidades diferentes (fácil, médio, difícil)
-	- [x] Progressão de velocidade conforme a pontuação aumenta
+  - [x] Velocidades diferentes (fácil, médio, difícil)
+  - [x] Progressão de velocidade conforme a pontuação aumenta
 
 - **Power-ups**
-	- [ ] Comida dourada (pontos extras)
-	- [ ] Comida de velocidade (altera temporariamente a velocidade)
-	- [ ] Comida de invencibilidade (atravessa paredes/corpo temporariamente)
+  - [ ] Comida dourada (pontos extras)
+  - [ ] Comida de velocidade (altera temporariamente a velocidade)
+  - [ ] Comida de invencibilidade (atravessa paredes/corpo temporariamente)
 
 - **Obstáculos**
-	- [ ]Barreiras estáticas no grid
-	- [ ]Obstáculos móveis
-	- [ ]Portais de teletransporte
+  - [ ]Barreiras estáticas no grid
+  - [ ]Obstáculos móveis
+  - [ ]Portais de teletransporte
 
 - **Modos de Jogo**
-	- [ ] Modo clássico (atual)
-	- [ ] Modo infinito (sem paredes)
-	- [ ] Modo desafio (níveis pré-definidos)
+  - [ ] Modo clássico (atual)
+  - [ ] Modo infinito (sem paredes)
+  - [ ] Modo desafio (níveis pré-definidos)
 
 ### 2. Visual
 
 - **Temas Visuais**
-	- [ ] Diferentes ambientes (floresta, deserto, espaço)
-	- [ ] Personalização da cobra (skins, cores)
+  - [ ] Diferentes ambientes (floresta, deserto, espaço)
+  - [ ] Personalização da cobra (skins, cores)
 
 - **Efeitos Visuais**
-	- [ ] Partículas ao comer comida
-	- [ ] Efeitos de iluminação avançados
-	- [ ] Ambiente 3D mais detalhado
+  - [ ] Partículas ao comer comida
+  - [ ] Efeitos de iluminação avançados
+  - [ ] Ambiente 3D mais detalhado
 
 ### 3. Áudio
 
 - **Música de Fundo**
-	- [ ] Trilha sonora temática
-	- [ ] Variações para diferentes estados do jogo
+  - [ ] Trilha sonora temática
+  - [ ] Variações para diferentes estados do jogo
 
 - **Efeitos Sonoros**
-	- [ ] Som ao comer comida
-	- [ ] Som de colisão
-	- [ ] Feedback sonoro para movimentos
+  - [ ] Som ao comer comida
+  - [ ] Som de colisão
+  - [ ] Feedback sonoro para movimentos
 
 ### 4. Interface e UX
 
 - **Menu Principal**
-	- [ ] Tela inicial com opções
-	- [ ] Configurações de jogo
+  - [ ] Tela inicial com opções
+  - [ ] Configurações de jogo
 
 - **Sistema de Recordes**
-	- [ ]Armazenamento de melhores pontuações
-	- [ ]Integração com localStorage
+  - [ ]Armazenamento de melhores pontuações
+  - [ ]Integração com localStorage
 
 - **Controles Móveis**
-	- [ ]Suporte para toque em dispositivos móveis
-	- [ ]Layout responsivo
+  - [ ]Suporte para toque em dispositivos móveis
+  - [ ]Layout responsivo
 
 ### 5. Técnicos
 
 - **Otimizações**
-	- [ ] Melhor desempenho em dispositivos diversos
-	- [ ] Responsividade para diferentes tamanhos de tela
+  - [ ] Melhor desempenho em dispositivos diversos
+  - [ ] Responsividade para diferentes tamanhos de tela
 
 - **Salvamento**
-	- [ ] Persistência de progresso e configurações
-	- [ ] Sistema de desbloqueáveis
+  - [ ] Persistência de progresso e configurações
+  - [ ] Sistema de desbloqueáveis
 
 ## Priorização
 
