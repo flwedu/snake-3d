@@ -4,12 +4,14 @@ export function GameControls() {
 	const difficulty = useSnakeStore((s) => s.difficulty);
 	const setDifficulty = useSnakeStore((s) => s.setDifficulty);
 	const restart = useSnakeStore((s) => s.restart);
+	const startGame = useSnakeStore((s) => s.startGame);
 	const gameOver = useSnakeStore((s) => s.gameOver);
+	const gameStarted = useSnakeStore((s) => s.gameStarted);
 	const score = useSnakeStore((s) => s.score);
 
-	// O jogo está ativo se não está game over E tem pontuação > 0 (já começou)
-	const isGameActive = !gameOver && score > 0;
-	const isFirstTime = !gameOver && score === 0;
+	// O jogo está ativo se foi iniciado, não está game over E tem pontuação > 0
+	const isGameActive = gameStarted && !gameOver && score >= 0;
+	const isFirstTime = !gameStarted && !gameOver;
 
 	// Tradução das dificuldades para português
 	const difficultyLabels: Record<Difficulty, string> = {
@@ -136,7 +138,7 @@ export function GameControls() {
 				{/* Botão de Start/Restart */}
 				<button
 					type="button"
-					onClick={restart}
+					onClick={isFirstTime ? startGame : restart}
 					style={{
 						padding: "12px 32px",
 						fontSize: 18,

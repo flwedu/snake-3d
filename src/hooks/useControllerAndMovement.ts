@@ -39,15 +39,26 @@ export function useControllerAndMovement(gameOver: boolean) {
 	const setDirection = useSnakeStore((s) => s.setDirection);
 	const moveSnake = useSnakeStore((s) => s.moveSnake);
 	const restart = useSnakeStore((s) => s.restart);
+	const togglePause = useSnakeStore((s) => s.togglePause);
 	const updateEffects = useSnakeStore((s) => s.updateEffects);
 
 	// Controles de teclado
 	useEffect(() => {
 		function handleKey(e: KeyboardEvent) {
 			const direction = getDirection(e);
+
+			// Tecla ESC para pausar/despausar
+			if (e.key === "Escape") {
+				e.preventDefault();
+				togglePause();
+				return;
+			}
+
+			// Enter/Space para reiniciar quando em game over
 			if ((e.key === "Enter" || e.key === " ") && gameOver) {
 				restart();
 			}
+
 			if (direction) {
 				e.preventDefault();
 				setDirection(direction as SnakeState["direction"]);
@@ -55,7 +66,7 @@ export function useControllerAndMovement(gameOver: boolean) {
 		}
 		window.addEventListener("keydown", handleKey, { passive: false });
 		return () => window.removeEventListener("keydown", handleKey);
-	}, [setDirection, gameOver, restart]);
+	}, [setDirection, gameOver, restart, togglePause]);
 
 	// Atualização de efeitos temporários
 	useEffect(() => {

@@ -8,6 +8,8 @@ import { Food } from "./components/Food";
 import { GameControls } from "./components/GameControls";
 import { GameStats } from "./components/GameStats";
 import { Grid } from "./components/Grid";
+import { PauseButton } from "./components/PauseButton";
+import { PauseScreen } from "./components/PauseScreen";
 import { PowerUpInfo } from "./components/PowerUpInfo";
 import { Snake } from "./components/Snake";
 import { Walls } from "./components/Walls";
@@ -48,6 +50,7 @@ function App() {
 			>
 				<PowerUpInfo />
 				<GameStats />
+				<PauseButton />
 				<Canvas
 					shadows
 					camera={{
@@ -73,6 +76,7 @@ function App() {
 					<Food />
 				</Canvas>
 				<GameControls />
+				<PauseScreen />
 			</div>
 		</>
 	);

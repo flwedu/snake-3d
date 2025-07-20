@@ -4,6 +4,8 @@ export function GameStats() {
 	const score = useSnakeStore((s) => s.score);
 	const difficulty = useSnakeStore((s) => s.difficulty);
 	const currentSpeed = useSnakeStore((s) => s.currentSpeed);
+	const isPaused = useSnakeStore((s) => s.isPaused);
+	const gameStarted = useSnakeStore((s) => s.gameStarted);
 
 	// Tradução das dificuldades para português
 	const difficultyLabels: Record<string, string> = {
@@ -34,9 +36,22 @@ export function GameStats() {
 			<div style={{ marginBottom: "5px" }}>
 				<span style={{ fontWeight: "bold" }}>Dificuldade:</span> {difficultyLabels[difficulty]}
 			</div>
-			<div>
+			<div style={{ marginBottom: "5px" }}>
 				<span style={{ fontWeight: "bold" }}>Velocidade:</span> {Math.round(1000 / currentSpeed)} mov/s
 			</div>
+			{gameStarted && (
+				<div style={{
+					marginTop: "8px",
+					padding: "4px 8px",
+					background: isPaused ? "#ff9800" : "#4caf50",
+					borderRadius: "4px",
+					fontSize: "10px",
+					fontWeight: "bold",
+					textAlign: "center"
+				}}>
+					{isPaused ? "⏸️ PAUSADO" : "▶️ JOGANDO"}
+				</div>
+			)}
 		</div>
 	);
 }

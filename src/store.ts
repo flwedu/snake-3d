@@ -36,6 +36,8 @@ export interface SnakeState {
 	direction: "up" | "down" | "left" | "right";
 	food: FoodItem;
 	gameOver: boolean;
+	gameStarted: boolean; // Indica se o jogo já foi iniciado
+	isPaused: boolean; // Indica se o jogo está pausado
 	score: number;
 	difficulty: Difficulty;
 	currentSpeed: number; // Velocidade atual (pode mudar com a pontuação)
@@ -44,6 +46,8 @@ export interface SnakeState {
 	moveSnake: () => void;
 	placeFood: () => void;
 	restart: () => void;
+	startGame: () => void; // Inicia o jogo
+	togglePause: () => void; // Alterna o estado de pause
 	setDifficulty: (difficulty: Difficulty) => void;
 	calculateSpeed: () => number; // Calcula a velocidade com base na dificuldade e pontuação
 	updateEffects: () => void; // Atualiza efeitos temporários
@@ -113,6 +117,8 @@ export const useSnakeStore = create<SnakeState>((set, get) => ({
 	direction: "right",
 	food: { position: GAME_CONFIG.initialFood, type: "normal" },
 	gameOver: false,
+	gameStarted: false,
+	isPaused: false,
 	score: 0,
 	difficulty: GAME_CONFIG.defaultDifficulty,
 	currentSpeed: DIFFICULTY_SPEEDS[GAME_CONFIG.defaultDifficulty],
@@ -128,8 +134,11 @@ export const useSnakeStore = create<SnakeState>((set, get) => ({
 		},
 	},
 	setDirection: (dir) => {
+		const { direction, gameStarted, isPaused, gameOver } = get();
+		// Só permite mudar direção se o jogo foi iniciado, não está pausado e não está em game over
+		if (!gameStarted || isPaused || gameOver) return;
+
 		// Impede reversão direta
-		const { direction } = get();
 		if (
 			(dir === "up" && direction === "down") ||
 			(dir === "down" && direction === "up") ||
@@ -141,8 +150,9 @@ export const useSnakeStore = create<SnakeState>((set, get) => ({
 		set({ direction: dir });
 	},
 	moveSnake: () => {
-		const { snake, direction, gridSize, food, gameOver, score, activeEffects } = get();
-		if (gameOver) return;
+		const { snake, direction, gridSize, food, gameOver, gameStarted, isPaused, score, activeEffects } = get();
+		// Não move se o jogo não foi iniciado, está pausado ou em game over
+		if (!gameStarted || isPaused || gameOver) return;
 		const nextHead = getNextHead(snake[0], direction);
 
 		// Verificar colisões apenas se não estiver invencível
@@ -290,6 +300,8 @@ export const useSnakeStore = create<SnakeState>((set, get) => ({
 			direction: "right",
 			food: { position: GAME_CONFIG.initialFood, type: "normal" },
 			gameOver: false,
+			gameStarted: false,
+			isPaused: false,
 			score: 0,
 			currentSpeed: DIFFICULTY_SPEEDS[difficulty], // Mantém a dificuldade atual, mas reinicia a velocidade
 			activeEffects: {
@@ -304,5 +316,17 @@ export const useSnakeStore = create<SnakeState>((set, get) => ({
 				},
 			},
 		});
+	},
+
+	startGame: () => {
+		set({ gameStarted: true, isPaused: false });
+	},
+
+	togglePause: () => {
+		const { gameStarted, gameOver, isPaused } = get();
+		// Só pode pausar se o jogo foi iniciado e não está em game over
+		if (gameStarted && !gameOver) {
+			set({ isPaused: !isPaused });
+		}
 	},
 }));
