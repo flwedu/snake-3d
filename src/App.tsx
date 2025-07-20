@@ -7,6 +7,7 @@ import { useRef } from "react";
 import { DifficultySelector } from "./components/DifficultySelector";
 import { Food } from "./components/Food";
 import { GameOver } from "./components/GameOver";
+import { GameStats } from "./components/GameStats";
 import { Grid } from "./components/Grid";
 import { PowerUpInfo } from "./components/PowerUpInfo";
 import { Snake } from "./components/Snake";
@@ -31,31 +32,12 @@ function CameraController({ gridSize }: { gridSize: number }) {
 function App() {
 	const gridSize = useSnakeStore((s) => s.gridSize);
 	const gameOver = useSnakeStore((s) => s.gameOver);
-	const score = useSnakeStore((s) => s.score);
-	const difficulty = useSnakeStore((s) => s.difficulty);
-	const currentSpeed = useSnakeStore((s) => s.currentSpeed);
 
 	useControllerAndMovement(gameOver);
-
-	// Tradução das dificuldades para português
-	const difficultyLabels: Record<string, string> = {
-		easy: "Fácil",
-		medium: "Médio",
-		hard: "Difícil",
-	};
 
 	return (
 		<>
 			<h1>Snake 3D</h1>
-			<div style={{ display: "flex", flexDirection: "column", alignItems: "center", margin: "8px 0" }}>
-				<p style={{ fontSize: 20, fontWeight: "bold", margin: 4 }}>
-					Pontuação: {score}
-				</p>
-				<p style={{ fontSize: 14, margin: 2 }}>
-					Dificuldade: <span style={{ fontWeight: "bold" }}>{difficultyLabels[difficulty]}</span> |
-					Velocidade: <span style={{ fontWeight: "bold" }}>{Math.round(1000 / currentSpeed)} mov/s</span>
-				</p>
-			</div>
 			<DifficultySelector />
 			<div
 				style={{
@@ -67,6 +49,7 @@ function App() {
 				id="canvas-container"
 			>
 				<PowerUpInfo />
+				<GameStats />
 				<Canvas
 					shadows
 					camera={{
