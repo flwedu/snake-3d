@@ -1,9 +1,9 @@
-import React from "react";
+
 import { Canvas } from "@react-three/fiber";
 import "./App.css";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useRef } from "react";
-import { ActiveEffects } from "./components/ActiveEffects";
+
 import { DifficultySelector } from "./components/DifficultySelector";
 import { Food } from "./components/Food";
 import { GameOver } from "./components/GameOver";
@@ -66,7 +66,6 @@ function App() {
 				}}
 				id="canvas-container"
 			>
-				<ActiveEffects />
 				<PowerUpInfo />
 				<Canvas
 					shadows
