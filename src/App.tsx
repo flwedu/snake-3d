@@ -4,9 +4,8 @@ import "./App.css";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useRef } from "react";
 
-import { DifficultySelector } from "./components/DifficultySelector";
 import { Food } from "./components/Food";
-import { GameOver } from "./components/GameOver";
+import { GameControls } from "./components/GameControls";
 import { GameStats } from "./components/GameStats";
 import { Grid } from "./components/Grid";
 import { PowerUpInfo } from "./components/PowerUpInfo";
@@ -38,7 +37,6 @@ function App() {
 	return (
 		<>
 			<h1>Snake 3D</h1>
-			<DifficultySelector />
 			<div
 				style={{
 					width: 600,
@@ -74,7 +72,7 @@ function App() {
 					<Snake />
 					<Food />
 				</Canvas>
-				{gameOver && <GameOver />}
+				<GameControls />
 			</div>
 		</>
 	);
