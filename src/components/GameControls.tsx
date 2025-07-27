@@ -104,36 +104,37 @@ export function GameControls() {
 						</div>
 					</>
 				) : (
-					<div
-						style={{
-							color: "#fff",
-							fontWeight: "bold",
-							fontSize: 28,
-							marginBottom: 24,
-						}}
-					>
-						Snake 3D
-					</div>
+					<>
+						<div
+							style={{
+								color: "#fff",
+								fontWeight: "bold",
+								fontSize: 28,
+								marginBottom: 24,
+							}}
+						>
+							Snake 3D
+						</div>
+						{/* Seletor de Dificuldade */}
+						<div style={{ marginBottom: 24 }}>
+							<div
+								style={{
+									color: "#fff",
+									fontSize: 16,
+									fontWeight: "bold",
+									marginBottom: 12,
+								}}
+							>
+								Dificuldade:
+							</div>
+							<div>
+								<DifficultyButton level="easy" />
+								<DifficultyButton level="medium" />
+								<DifficultyButton level="hard" />
+							</div>
+						</div>
+					</>
 				)}
-
-				{/* Seletor de Dificuldade */}
-				<div style={{ marginBottom: 24 }}>
-					<div
-						style={{
-							color: "#fff",
-							fontSize: 16,
-							fontWeight: "bold",
-							marginBottom: 12,
-						}}
-					>
-						Dificuldade:
-					</div>
-					<div>
-						<DifficultyButton level="easy" />
-						<DifficultyButton level="medium" />
-						<DifficultyButton level="hard" />
-					</div>
-				</div>
 
 				{/* Botão de Start/Restart */}
 				<button
